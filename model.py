@@ -10,8 +10,6 @@ with open('./data/driving_log.csv') as csvfile:
   for line in reader:
     lines.append(line)
 
-# Older 
-
 #with open('./data_track2/driving_log.csv') as csvfile:
 #  reader = csv.reader(csvfile)
 #  for line in reader:
@@ -65,19 +63,13 @@ model = Sequential()
 model.add(Cropping2D(cropping=((70, 25), (0, 0)), input_shape=X_train[0].shape))
 model.add(Lambda(lambda x: (x / 255.0) - 0.5))
 model.add(Dropout(0.2))
-model.add(Conv2D(24, (5, 5), activation="relu", padding='same'))
-model.add(MaxPooling2D())
-model.add(Conv2D(36, (5, 5), activation="relu", padding='same'))
-model.add(MaxPooling2D())
-model.add(Conv2D(48, (5, 5), activation="relu", padding='same'))
-model.add(MaxPooling2D())
+model.add(Conv2D(24, (5, 5), activation="relu"))
+model.add(Conv2D(36, (5, 5), activation="relu"))
+model.add(Conv2D(48, (5, 5), activation="relu"))
 model.add(Dropout(0.2))
-model.add(Conv2D(64, (3, 3), activation="relu", padding='same'))
-model.add(MaxPooling2D())
-model.add(Conv2D(64, (3, 3), activation="relu", padding='same'))
-model.add(MaxPooling2D())
+model.add(Conv2D(64, (3, 3), activation="relu"))
+model.add(Conv2D(64, (3, 3), activation="relu"))
 model.add(Flatten())
-model.add(Dense(1164))
 model.add(Dense(100))
 model.add(Dense(50))
 model.add(Dense(10))
@@ -89,7 +81,7 @@ model.add(Dense(1))
 #model.add(Cropping2D(cropping=((80, 25), (0, 0))))
 
 #model.add(Convolution2D(6, 5, 5, activation="relu"))
-#model.add(MaxPooling2D(j))
+#model.add(MaxPooling2D())
 
 #model.add(Convolution2D(6, 5, 5, activation="relu"))
 #model.add(MaxPooling2D())
@@ -103,9 +95,8 @@ model.add(Dense(1))
 #model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
-print(model.summary())
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=2)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4)
 
-model.save('model_test_5.h5')
+model.save('model_test_2.h5')
 
 
