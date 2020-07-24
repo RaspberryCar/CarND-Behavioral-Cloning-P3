@@ -2,6 +2,7 @@ import csv
 import cv2
 
 import numpy as np
+import tensorflow as tf
 
 lines = []
 
@@ -97,6 +98,10 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4)
 
-model.save('model_test_2.h5')
+# Convert the model
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
 
-
+# Save the TF Lite model
+with tf.io.gfile.GFile('model.tflite', 'wb') as f:
+  f.write(tflite_model)
