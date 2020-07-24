@@ -60,7 +60,9 @@ class TData:
         info = f.split('_')
         # maybe convert to radian with from -pi/4 to pi/4
         # and add correction required
-        measurement = float(info[1])
+        # 1. filename must be in format xxx_<ANGLE_DAT>_**.jpg
+        normalize = (float(info[1]) - self._angle_min) / ( self._angle_max - self._angle_min )
+        measurement = 2*normalize - 1
         image = cv2.imread(f)
         image_rgb = (cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
       except Exception as e:
@@ -103,7 +105,7 @@ class TData:
     X_train = np.array(self._augmentated_images)
     y_train = np.array(self._augmentated_measurements)
     model = Sequential()
-    model.add(Cropping2D(cropping=((70, 25), (0, 0)), input_shape=X_train[0].shape))
+    model.add(Cropping2D(cropping=((10, 2), (0, 0)), input_shape=X_train[0].shape))
     model.add(Lambda(lambda x: (x / 255.0) - 0.5))
     model.add(Dropout(0.2))
     model.add(Conv2D(24, (5, 5), activation="relu", padding='same'))
@@ -138,7 +140,10 @@ class TData:
     return rand_pixels
 
   def _generate_random_angle(self):
-    return random.uniform(self._angle_min, self._angle_max)
+    x = random.uniform(self._angle_min, self._angle_max)
+    normalize =  (x - self._angle_min) / ( self._angle_max - self._angle_min )
+    return 2*normalize - 1
+
 
   def _fetch_random(self):
     self._init()
@@ -159,6 +164,7 @@ if __name__ == "__main__":
   try:
     d = TData("./config.ini")
     d.fetch()
+    d.print_info()
     d.train()
   except Exception as e:
     print(e)
