@@ -1,1 +1,7 @@
 .env/
+udacity-simulator/data/
+udacity-simulator/data.zip
+*.pyc
+.vscode/
+*.h5
+udacity-simulator/data1/
