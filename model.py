@@ -25,9 +25,10 @@ for line in lines:
   for i in range(3):
     source_path = line[i]
     filename = source_path.split('/')[-1]
-    current_path = './data/IMG/' + filename
- 
+    current_path = filename.strip()
+    print("path is|" + current_path)
     image = cv2.imread(current_path)
+    #print(image)
     image_rgb = (cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     images.append(image_rgb)
 
