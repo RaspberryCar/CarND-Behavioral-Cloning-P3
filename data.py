@@ -128,10 +128,9 @@ class TData:
     model.compile(loss='mse', optimizer='adam')
     model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4)
     model.save(self._model_name + ".h5")
-
-    loss, acc = model.evaluate(X_train, y_train, verbose=0)
-    print('Accuracy: %.3f' % acc)
     self._generate_tflite()
+    results = model.evaluate(X_train, y_train, verbose=0)
+    print("Evaluate:", results)
 
   def print_info(self):
     print(len(self._augmentated_measurements))
