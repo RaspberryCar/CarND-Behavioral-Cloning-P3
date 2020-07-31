@@ -64,6 +64,7 @@ class TData:
         normalize = (float(info[1]) - self._angle_min) / ( self._angle_max - self._angle_min )
         measurement = 2*normalize - 1
         image = cv2.imread(f)
+        image = cv2.GaussianBlur(image,(5,5),cv2.BORDER_DEFAULT)
         image_rgb = (cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
       except Exception as e:
         print(e)
