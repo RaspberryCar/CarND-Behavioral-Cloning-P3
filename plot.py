@@ -55,7 +55,7 @@ class TPlot:
 
   def fetch(self):
     self._fetch_from_path()
-    self._fetch_from_csv()
+    #self._fetch_from_csv()
       
 
   def normalize(self, angle):
@@ -103,7 +103,8 @@ class TPlot:
 
     #self._df_simu['rfile'] = self._df_simu.apply(lambda row: self.get_simupath(row.rfile), axis=1)
     #self._df_simu['rbase64'] = self._df_simu.apply(lambda row: self.get_base64_encoded_image(row.rfile), axis=1)
-
+    #3177
+    #3443
     print(self._df_simu.angle_normalize.size)
 
   def prepare_plot_simu(self,fig, ax):
@@ -153,11 +154,11 @@ class TPlot:
     plugins.connect(fig, tooltip)
   
   def plot(self):
-    fig, ax = plt.subplots(2,1)
+    fig, ax = plt.subplots(1,1)
     fig.subplots_adjust(left=0.05, right=0.95, bottom=0.05, top=0.95, hspace=0.1, wspace=0.1)
     fig.suptitle('Steering angle')
-    self.prepare_plot_real(fig, ax[0])
-    self.prepare_plot_simu(fig, ax[1])
+    self.prepare_plot_real(fig, ax)
+    #self.prepare_plot_simu(fig, ax[1])
     mpld3.show()  
 
   def show(self):
@@ -170,5 +171,5 @@ if __name__ == "__main__":
     d.fetch()
     d.show()
   except Exception as e:
-    print(e)
+    print("error:",e)
       
