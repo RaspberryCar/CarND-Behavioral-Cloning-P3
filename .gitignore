@@ -5,3 +5,4 @@ udacity-simulator/*.zip
 .vscode/
 *.h5
 udacity-simulator/data1/
+.idea
