@@ -1,12 +1,30 @@
 # **Behavioral Cloning** 
 
-## Writeup Template
+## Install x86
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+### Make sure to use right Python 3.8
 
----
+Tensorflow only supports Python 3.5 to 3.8
 
-**Behavioral Cloning Project**
+```
+brew unlink python
+brew link --force python@3.8
+brew link --force --overwrite python@3.8
+python3 --version
+echo 'export PATH="/usr/local/opt/python@3.8/bin:$PATH"' >> /Users/hannes/.bash_profile
+source /Users/hannes/.bash_profile
+python3 --version
+```
+### Virtual env
+
+```
+rm -rf modelVenv/
+python3 -m venv modelVenv
+source modelVenv/bin/activate
+/Users/hannes/git/machinelearninghackathon/udacity-simulator/modelVenv/bin/python3 -m pip install --upgrade pip
+```
+
+## Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior
