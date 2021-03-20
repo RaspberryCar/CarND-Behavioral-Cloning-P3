@@ -10,6 +10,8 @@ with open('./data/driving_log.csv') as csvfile:
   for line in reader:
     lines.append(line)
 
+# Older 
+
 #with open('./data_track2/driving_log.csv') as csvfile:
 #  reader = csv.reader(csvfile)
 #  for line in reader:
