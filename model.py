@@ -1,17 +1,17 @@
 import csv
-import cv2
 
+import cv2
 import numpy as np
 import tensorflow as tf
 
 lines = []
 
 with open('./data/driving_log.csv') as csvfile:
-  reader = csv.reader(csvfile)
-  for line in reader:
-    lines.append(line)
+    reader = csv.reader(csvfile)
+    for line in reader:
+        lines.append(line)
 
-#with open('./data_track2/driving_log.csv') as csvfile:
+# with open('./data_track2/driving_log.csv') as csvfile:
 #  reader = csv.reader(csvfile)
 #  for line in reader:
 #    lines.append(line)
@@ -22,43 +22,40 @@ measurements = []
 print("Getting data....")
 correction = 0.2
 for line in lines:
-  for i in range(3):
-    source_path = line[i]
-    filename = source_path.split('/')[-1]
-    current_path = filename.strip()
-    print("path is|" + current_path)
-    image = cv2.imread(current_path)
-    #print(image)
-    image_rgb = (cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-    images.append(image_rgb)
+    for i in range(3):
+        source_path = line[i]
+        filename = source_path.split('/')[-1]
+        current_path = filename.strip()
+        print("path is|" + current_path)
+        image = cv2.imread(current_path)
+        # print(image)
+        image_rgb = (cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        images.append(image_rgb)
 
-    measurement = float(line[3])
+        measurement = float(line[3])
 
-    if (i == 1):
-      measurement = measurement + correction
-    
-    if (i == 2):
-      measurement = measurement - correction
+        if (i == 1):
+            measurement = measurement + correction
 
-    measurements.append(measurement)
+        if (i == 2):
+            measurement = measurement - correction
 
+        measurements.append(measurement)
 
 augmentated_images, augmentated_measurements = [], []
 
 for image, measurement in zip(images, measurements):
-  augmentated_images.append(image)
-  augmentated_measurements.append(measurement)
-  augmentated_images.append(cv2.flip(image, 1))
-  augmentated_measurements.append(measurement * -1)
+    augmentated_images.append(image)
+    augmentated_measurements.append(measurement)
+    augmentated_images.append(cv2.flip(image, 1))
+    augmentated_measurements.append(measurement * -1)
 
 X_train = np.array(augmentated_images)
 y_train = np.array(augmentated_measurements)
 
-
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
 from keras.layers import Conv2D
-from keras.layers.pooling import MaxPooling2D
 
 # Nvidia's CNN architecture
 model = Sequential()
@@ -77,24 +74,24 @@ model.add(Dense(50))
 model.add(Dense(10))
 model.add(Dense(1))
 
-#model = Sequential()
-#model.add(Lambda(lambda x : x / 255.0 - 0.5, input_shape=(160, 320, 3)))
+# model = Sequential()
+# model.add(Lambda(lambda x : x / 255.0 - 0.5, input_shape=(160, 320, 3)))
 
-#model.add(Cropping2D(cropping=((80, 25), (0, 0))))
+# model.add(Cropping2D(cropping=((80, 25), (0, 0))))
 
-#model.add(Convolution2D(6, 5, 5, activation="relu"))
-#model.add(MaxPooling2D())
+# model.add(Convolution2D(6, 5, 5, activation="relu"))
+# model.add(MaxPooling2D())
 
-#model.add(Convolution2D(6, 5, 5, activation="relu"))
-#model.add(MaxPooling2D())
+# model.add(Convolution2D(6, 5, 5, activation="relu"))
+# model.add(MaxPooling2D())
 
 # use dropout to eliminate overfitting and improve the validation loss
-#model.add(Dropout(.3))
+# model.add(Dropout(.3))
 
-#model.add(Flatten())
-#model.add(Dense(120))
-#model.add(Dense(84))
-#model.add(Dense(1))
+# model.add(Flatten())
+# model.add(Dense(120))
+# model.add(Dense(84))
+# model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4)
@@ -105,4 +102,4 @@ tflite_model = converter.convert()
 
 # Save the TF Lite model
 with tf.io.gfile.GFile('model.tflite', 'wb') as f:
-  f.write(tflite_model)
+    f.write(tflite_model)
