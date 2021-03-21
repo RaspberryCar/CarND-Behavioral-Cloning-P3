@@ -1,0 +1,13 @@
+# https://hub.docker.com/r/library/python/tags/
+image: "python:3.8" #commands to run in the Docker container before starting each job.
+before_script:
+  - python --version
+  - pip --version
+  - pip install -r requirements.txt
+stages:
+  - Static Analysis
+  - Test
+pylint:
+  stage: Static Analysis
+  script:
+  - pylint -d C0301 *.py
