@@ -23,6 +23,9 @@ python3 -m venv modelVenv
 source modelVenv/bin/activate
 /Users/hannes/git/machinelearninghackathon/udacity-simulator/modelVenv/bin/python3 -m pip install --upgrade pip
 ```
+### OpenCV and Tensorflow on Apple Silicon M1
+
+Please see ```installTensorflowM1.sh```
 
 ## Behavioral Cloning Project**
 
