@@ -4,7 +4,14 @@ import cv2
 import numpy as np
 import tensorflow as tf
 
+import datetime
+
+t_set = lambda: datetime.datetime.now().astimezone().replace(microsecond=0)
+t_diff = lambda t: str(datetime.datetime.now().astimezone().replace(microsecond=0) - t)
+t_stamp = lambda t=None: str(t) if t else str(t_set())
+
 lines = []
+tStart = t_set()
 
 with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
@@ -43,6 +50,8 @@ for line in lines:
         measurements.append(measurement)
 
 augmentated_images, augmentated_measurements = [], []
+
+t = t_set()
 
 for image, measurement in zip(images, measurements):
     augmentated_images.append(image)
@@ -104,3 +113,7 @@ tflite_model = converter.convert()
 # Save the TF Lite model
 with tf.io.gfile.GFile('model.tflite', 'wb') as f:
     f.write(tflite_model)
+
+print("")
+print("Time ML       elapsed: {}".format(t_diff(t)))
+print("Time complete elapsed: {}".format(t_diff(tStart)))
