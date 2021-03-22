@@ -1,8 +1,8 @@
 import csv
 import cv2
 import numpy as np
-import tensorflow as tf
 import datetime
+from tensorflow.python.keras.layers import MaxPooling2D
 
 t_set = lambda: datetime.datetime.now().astimezone().replace(microsecond=0)
 t_diff = lambda t: str(datetime.datetime.now().astimezone().replace(microsecond=0) - t)
@@ -31,8 +31,9 @@ for line in lines:
         source_path = line[i]
         print("source|" + str(line))
         filename = source_path.split('/')[-1]
-        current_path = filename.strip()
+        # current_path = filename.strip()
         measurement = float(line[3])
+        current_path = './data/IMG/' + filename
         print("path is|" + current_path + " measurement=" + str(measurement))
         image = cv2.imread(current_path)
         # print(image)
@@ -69,13 +70,19 @@ model = Sequential()
 model.add(Cropping2D(cropping=((70, 25), (0, 0)), input_shape=X_train[0].shape))
 model.add(Lambda(lambda x: (x / 255.0) - 0.5))
 model.add(Dropout(0.2))
-model.add(Conv2D(24, (5, 5), activation="relu"))
-model.add(Conv2D(36, (5, 5), activation="relu"))
-model.add(Conv2D(48, (5, 5), activation="relu"))
+model.add(Conv2D(24, (5, 5), activation="relu", padding='same'))
+model.add(MaxPooling2D())
+model.add(Conv2D(36, (5, 5), activation="relu", padding='same'))
+model.add(MaxPooling2D())
+model.add(Conv2D(48, (5, 5), activation="relu", padding='same'))
+model.add(MaxPooling2D())
 model.add(Dropout(0.2))
-model.add(Conv2D(64, (3, 3), activation="relu"))
-model.add(Conv2D(64, (3, 3), activation="relu"))
+model.add(Conv2D(64, (3, 3), activation="relu", padding='same'))
+model.add(MaxPooling2D())
+model.add(Conv2D(64, (3, 3), activation="relu", padding='same'))
+model.add(MaxPooling2D())
 model.add(Flatten())
+model.add(Dense(1164))
 model.add(Dense(100))
 model.add(Dense(50))
 model.add(Dense(10))
@@ -104,19 +111,12 @@ model.compile(loss='mse', optimizer='adam')
 print("model.summary ", model.summary())
 print("")
 
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=2)
 
 print("")
-modelName = 'model.tflite'
-
-# Convert the model
-converter = tf.lite.TFLiteConverter.from_keras_model(model)
-tflite_model = converter.convert()
-
-# Save the TF Lite model
-with tf.io.gfile.GFile(modelName, 'wb') as f:
-    f.write(tflite_model)
-
+modelName = 'model_test_hackathon.h5'
+model.save(modelName)
+print("Model saved to ", modelName)
 print("")
 print("Time ML       elapsed: {}".format(t_diff(t)))
 print("Time complete elapsed: {}".format(t_diff(tStart)))
