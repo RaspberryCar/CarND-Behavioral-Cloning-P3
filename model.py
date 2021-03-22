@@ -1,9 +1,7 @@
 import csv
-
 import cv2
 import numpy as np
 import tensorflow as tf
-
 import datetime
 
 t_set = lambda: datetime.datetime.now().astimezone().replace(microsecond=0)
@@ -49,23 +47,22 @@ for line in lines:
 
         measurements.append(measurement)
 
-augmentated_images, augmentated_measurements = [], []
+augmented_images, augmented_measurements = [], []
 
 t = t_set()
 
 for image, measurement in zip(images, measurements):
-    augmentated_images.append(image)
-    augmentated_measurements.append(measurement)
-    augmentated_images.append(cv2.flip(image, 1))
-    augmentated_measurements.append(measurement * -1)
+    augmented_images.append(image)
+    augmented_measurements.append(measurement)
+    augmented_images.append(cv2.flip(image, 1))
+    augmented_measurements.append(measurement * -1)
 
-X_train = np.array(augmentated_images)
-y_train = np.array(augmentated_measurements)
+X_train = np.array(augmented_images)
+y_train = np.array(augmented_measurements)
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
 from tensorflow.keras.layers import Conv2D
-from tensorflow.keras.layers import MaxPooling2D
 
 # Nvidia's CNN architecture
 model = Sequential()
