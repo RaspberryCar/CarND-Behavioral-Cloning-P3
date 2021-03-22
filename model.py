@@ -53,9 +53,10 @@ for image, measurement in zip(images, measurements):
 X_train = np.array(augmentated_images)
 y_train = np.array(augmentated_measurements)
 
-from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
-from keras.layers import Conv2D
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import MaxPooling2D
 
 # Nvidia's CNN architecture
 model = Sequential()
