@@ -6,3 +6,5 @@ udacity-simulator/*.zip
 *.h5
 udacity-simulator/data1/
 .idea
+
+venv
