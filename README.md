@@ -18,10 +18,10 @@ python3 --version
 ### Virtual env
 
 ```
-rm -rf modelVenv/
-python3 -m venv modelVenv
-source modelVenv/bin/activate
-/Users/hannes/git/machinelearninghackathon/udacity-simulator/modelVenv/bin/python3 -m pip install --upgrade pip
+rm -rf venv/
+python3 -m venv venv
+source venv/bin/activate
+/Users/hannes/RaspberryCar/RaspiCar/CarND-Behavioral/venv/bin/python3 -m pip install --upgrade pip
 ```
 ### OpenCV and Tensorflow on Apple Silicon M1
 
