@@ -24,7 +24,7 @@ with open('./data/driving_log.csv') as csvfile:
 images = []
 measurements = []
 
-print("Getting data....")
+print("Getting data....{} lines".format(len(lines)))
 correction = 0.2
 for line in lines:
     for i in range(3):
@@ -101,14 +101,20 @@ model.add(Dense(1))
 # model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
+print("model.summary ", model.summary())
+print("")
+
 model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4)
+
+print("")
+modelName = 'model.tflite'
 
 # Convert the model
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
 
 # Save the TF Lite model
-with tf.io.gfile.GFile('model.tflite', 'wb') as f:
+with tf.io.gfile.GFile(modelName, 'wb') as f:
     f.write(tflite_model)
 
 print("")
