@@ -1,49 +1,50 @@
-# https://medium.com/analytics-vidhya/m1-mac-mini-scores-higher-than-my-nvidia-rtx-2080ti-in-tensorflow-speed-test-9f3db2b02d74
-
-import time
-
-# import libraries
 import tensorflow as tf
+from tensorflow.python.compiler.mlcompute import mlcompute
+from tensorflow.python.framework.ops import disable_eager_execution
+import datetime
 
-# download fashion mnist dataset
-fashion_mnist = tf.keras.datasets.fashion_mnist
-(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+t_set = lambda: datetime.datetime.now().astimezone().replace(microsecond=0)
+t_diff = lambda t: str(datetime.datetime.now().astimezone().replace(microsecond=0) - t)
+t_stamp = lambda t=None: str(t) if t else str(t_set())
 
-train_set_count = len(train_labels)
-test_set_count = len(test_labels)
+tStart = t_set()
 
-# setup start time
-t0 = time.time()
+disable_eager_execution()
+mlcompute.set_mlc_device(device_name='gpu')  # Available options are 'cpu', 'gpu', and 'any'.
+tf.config.run_functions_eagerly(False)
 
-# normalize images
-train_images = train_images / 255.0
-test_images = test_images / 255.0
+print("TensorFlow version: {}".format(tf.__version__))
+print("Keras      version: {}".format(tf.keras.__version__))
+print("Eager execution: {}".format(tf.executing_eagerly()))
+# print("Cuda version: {}".format(tf_build_info.cuda_version_number))
+# print("Cudnn version: {}".format(tf_build_info.cudnn_version_number))
+print("Num Physical GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+print("Num Logical  GPUs Available: ", len(tf.config.experimental.list_logical_devices('GPU')))
 
-# create ML model
-model = tf.keras.Sequential([
+mnist = tf.keras.datasets.mnist
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train, x_test = x_train / 255.0, x_test / 255.0
+
+model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
     tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(10)
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(10, activation='softmax')
 ])
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
 
-# compile ML model
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
 
-# train ML model
-model.fit(train_images, train_labels, epochs=10)
+model.fit(x_train, y_train, epochs=5)
+model.evaluate(x_test, y_test, verbose=2)
 
-# evaluate ML model on test set
-test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)
-
-# setup stop time
-t1 = time.time()
-total_time = t1 - t0
-
-# print results
-print('\n')
-print(f'Training set contained {train_set_count} images')
-print(f'Testing set contained {test_set_count} images')
-print(f'Model achieved {test_acc:.2f} testing accuracy')
-print(f'Training and testing took {total_time:.2f} seconds')
+print("")
+print("Time complete elapsed: {}".format(t_diff(tStart)))
