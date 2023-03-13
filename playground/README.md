@@ -2,22 +2,38 @@
 
 `python playground/speedTest.py`
 
-#### M1
+### Tensorflow 2.4.0
 
-Time complete elapsed: 0:00:33
+|  Jetson nano   | Apple M1 | Apple M1 pro |
+|-----|----------|--------------|
+|   0:02:14  | 0:00:33  | 0:00:29      |
 
-#### M1 pro
+### Tensorflow 2.9 with tensorflow-metal
 
-Time complete elapsed: 0:00:29
+https://developer.apple.com/metal/tensorflow-plugin/
+
+`speedtest.py` removed `mlcompute`
+```
+pip install --force-reinstall -v tensorflow-macos==2.9
+pip install --force-reinstall -v tensorflow-metal==0.5.0
+```
+
+| M1  |    M1 pro   |
+|-----|-----|
+| 0:00:42 |   0:00:48  |
 
 ##  Speedtest BIG
 
 `python playground/speedTestBig.py`
 
-#### M1
+### tensorflow 2.4.0 local
 
-Training and testing took 2263.53 seconds
+| M1              |    M1 pro   |
+|-----------------|-----|
+| 2263.53 seconds |   1751.69 seconds  |
 
-### M1 pro
+### tensorflow 2.9 CI
 
-Training and testing took 1751.69 seconds
+| M1  |    M1 pro   |
+|-----|-----|
+| 1320.85 seconds |   1103.40 seconds |
