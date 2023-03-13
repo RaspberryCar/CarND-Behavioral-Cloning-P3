@@ -28,6 +28,8 @@ pip install --force-reinstall -v tensorflow-metal==0.5.0
 
 ### tensorflow 2.4.0 local
 
+Using [first](./installTensorflow-firstAndOld-M1-way.sh) (and outdated) way to use Tensorflow on M1
+
 | M1              |    M1 pro   |
 |-----------------|-----|
 | 2263.53 seconds |   1751.69 seconds  |
