@@ -1,0 +1,84 @@
+name: Linux
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    name: build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-20.04 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          submodules: recursive
+      - name: Python install
+        run: sudo apt-get install python3.8 python3.8-dev python3.8-distutils python3.8-venv
+      - name: Python3 version
+        run: python3 --version
+      - name: Install requirements
+        run: |
+          rm -rf venv/
+          python3 -m venv venv
+          source venv/bin/activate
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirementsUbuntu.txt
+      - name: Show graphic card
+        run: lspci | grep VGA
+      - name: Check tensorflow
+        run: |
+          source venv/bin/activate
+          python3 -c 'import tensorflow as tf; print("tensorflow=", tf.__version__)'
+          python3 ./playground/numpyTest.py
+          python3 ./playground/testInstallation.py
+      - name: Speed test
+        run: |
+          source venv/bin/activate
+          python3 ./playground/speedTest.py
+      - name: Train car data
+        run: |
+          source venv/bin/activate
+          python3 ./trainRaspiCar.py
+#      - name: Train UDACity data
+#        run: |
+#          source venv/bin/activate
+#          python3 ./trainUDACity.py
+
+      - name: Prepare changes
+        run: |
+          git add .
+          git commit --dry-run && echo "Things to commit" || echo "Clean repo, nothing to archive"
+          if git commit --dry-run; then
+            git reset .
+            mkdir ./modified-files
+            git ls-files -o --exclude-standard
+            echo "Changes detected new"
+            git ls-files -o --exclude-standard | while read filename
+            do
+                echo "Printing: $filename"
+                cp "$filename" ./modified-files
+            done
+            git ls-files --modified
+            echo "Changes detected changed"
+            git ls-files --modified | while read filename
+            do
+                echo "Printing: $filename"
+                cp "$filename" ./modified-files
+            done
+          else
+            echo "Clean repo"
+          fi
+      - name: Archive changes
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: changed
+          path: ./modified-files
