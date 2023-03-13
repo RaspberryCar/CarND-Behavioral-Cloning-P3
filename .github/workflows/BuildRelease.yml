@@ -43,6 +43,14 @@ jobs:
           python3 -c 'import tensorflow as tf; print("tensorflow=", tf.__version__)'
           python3 ./playground/numpyTest.py
           python3 ./playground/testInstallation.py
+      - name: Speed test
+        run: |
+          source venv/bin/activate
+          python3 ./playground/speedTest.py
+      - name: Speed test big
+        run: |
+          source venv/bin/activate
+          python3 ./playground/speedTestBig.py
       - name: Train car data
         run: |
           source venv/bin/activate
