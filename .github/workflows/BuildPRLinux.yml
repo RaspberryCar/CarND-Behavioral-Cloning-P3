@@ -52,6 +52,10 @@ jobs:
         run: |
           source venv/bin/activate
           python${{ matrix.py }} ./playground/speedMeasurement.py
+      - name: Speed test big
+        run: |
+          source venv/bin/activate
+          python${{ matrix.py }} ./playground/speedTestBig.py
       - name: Train car data
         run: |
           source venv/bin/activate
