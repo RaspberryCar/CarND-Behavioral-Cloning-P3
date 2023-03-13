@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ M1 ]
+        os: [ M1, M1pro ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
