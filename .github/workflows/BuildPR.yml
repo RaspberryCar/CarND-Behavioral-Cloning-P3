@@ -39,3 +39,7 @@ jobs:
         run: |
           source venv/bin/activate
           python3 ./playground/speedTest.py
+      - name: Tensorflow verify
+        run: |
+          source venv/bin/activate
+          python3 ./playground/tensorflowVerifyApple.py
