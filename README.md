@@ -48,7 +48,7 @@ pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compu
 
 #### OpenCV and Tensorflow on Apple Silicon M1
 
-Please see ```installTensorflowM1.sh```
+Please see [outdated instruction](playground/installTensorflow-firstAndOld-M1-way.sh) or better see CI, which build on an Apple Silicon M1
 
 ## Behavioral Cloning Project**
 
