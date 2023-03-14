@@ -36,6 +36,6 @@ Using [first](./installTensorflow-firstAndOld-M1-way.sh) (and outdated) way to u
 
 ### tensorflow 2.9 CI
 
-| M1  |    M1 pro   |
-|-----|-----|
-| 1320.85 seconds |   1103.40 seconds |
+| M1  |    M1 pro   | Spock   |
+|-----|-----|-----|
+| 1320.85 seconds |   1103.40 seconds |   2995.83 seconds |
