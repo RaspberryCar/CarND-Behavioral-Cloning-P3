@@ -3,9 +3,9 @@ import glob
 import random
 from configparser import ConfigParser
 
-import cv2
 import numpy as np
 import tensorflow as tf
+import cv2
 from keras.layers import Conv2D
 from keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
 from keras.layers.pooling import MaxPooling2D

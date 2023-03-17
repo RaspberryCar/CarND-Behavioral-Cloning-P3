@@ -29,20 +29,20 @@ correction = 0.2
 for line in lines:
     for i in range(3):
         source_path = line[i]
+        print("source|" + str(line))
         filename = source_path.split('/')[-1]
         current_path = filename.strip()
-        print("path is|" + current_path)
+        measurement = float(line[3])
+        print("path is|" + current_path + " measurement=" + str(measurement))
         image = cv2.imread(current_path)
         # print(image)
         image_rgb = (cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         images.append(image_rgb)
 
-        measurement = float(line[3])
-
-        if (i == 1):
+        if i == 1:
             measurement = measurement + correction
 
-        if (i == 2):
+        if i == 2:
             measurement = measurement - correction
 
         measurements.append(measurement)
