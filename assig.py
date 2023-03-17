@@ -18,18 +18,20 @@ correction = 0.5
 for line in lines:
     for i in range(3):
         source_path = line[i]
-        filename = source_path.split('/')[-1]
-        current_path = './data/IMG/' + filename
+        #filename = source_path.split('/')[-1]
+        # current_path = './data/IMG/' + filename
+        filename = source_path #.split('/')[-1]
+        current_path = filename.strip()
 
         image = cv2.imread(current_path)
         images.append(image)
 
         measurement = float(line[3])
 
-        if (i == 1):
+        if i == 1:
             measurement = measurement + correction
 
-        if (i == 2):
+        if i == 2:
             measurement = measurement - correction
 
         measurements.append(measurement)

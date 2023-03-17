@@ -3,9 +3,9 @@ import glob
 import random
 from configparser import ConfigParser
 
-import cv2
 import numpy as np
 import tensorflow as tf
+import cv2
 from keras.layers import Conv2D
 from keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
 from keras.layers.pooling import MaxPooling2D
@@ -30,6 +30,7 @@ class TData:
         self._angle_min = float(parser.get('general', 'angle_min'))
         self._correction = float(parser.get('general', 'correction'))
         self._random_mode = True if parser.get('general', 'random_mode') == "True" else False
+        print("configure done")
 
     def _init(self):
         self._lines = []
@@ -54,6 +55,7 @@ class TData:
     def _fetch_from_path(self):
         self._init()
         files = glob.glob(self._img_path + "*.jpg")
+        print("files=" + str(len(files)) + " " + self._img_path)
         for f in files:
             try:
                 info = f.split('_')
@@ -129,10 +131,10 @@ class TData:
         model.save(self._model_name + ".h5")
         self._generate_tflite()
         results = model.evaluate(X_train, y_train, verbose=0)
-        print("Evaluate:", results)
+        print("Evaluate:{}".format(results))
 
     def print_info(self):
-        print(len(self._augmentated_measurements))
+        print("Info (augmented measurements): {}".format(len(self._augmentated_measurements)))
 
     def _generate_random_image(self, width=128, height=128):
         rand_pixels = np.random.randint(255, size=(height, width, 3), dtype=np.uint8)
@@ -159,6 +161,7 @@ class TData:
         converter = tf.lite.TFLiteConverter.from_keras_model(model)
         tflite_model = converter.convert()
         open(self._model_name + ".tflite", "wb").write(tflite_model)
+        print("TFFile:", self._model_name + ".tflite")
 
 
 if __name__ == "__main__":
