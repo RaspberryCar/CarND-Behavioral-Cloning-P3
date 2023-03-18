@@ -11,6 +11,13 @@ from keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
 from keras.layers.pooling import MaxPooling2D
 from keras.models import Sequential
 
+import datetime
+
+t_set = lambda: datetime.datetime.now().astimezone().replace(microsecond=0)
+t_diff = lambda t: str(datetime.datetime.now().astimezone().replace(microsecond=0) - t)
+t_stamp = lambda t=None: str(t) if t else str(t_set())
+
+tStart = t_set()
 
 class TData:
     def __init__(self, config_filepath):
@@ -58,11 +65,20 @@ class TData:
         print("files=" + str(len(files)) + " " + self._img_path)
         for f in files:
             try:
-                info = f.split('_')
+                line_token_list = f.split('_')
+                # carData1678530861448_0_STOP_0.jpg
+                # PREFIX-timestamp_<STEERING>_<DIRECTION>_<SPEED>.jpp
+                steering = line_token_list[1]
+                direction = line_token_list[2]
+                speed = line_token_list[3].split(".")[0] # without <.jpg>
+                normalize = (float(steering) - self._angle_min) / (self._angle_max - self._angle_min)
+                print("files={} steering={}/{} direction={} speed={}".format(f, steering, normalize, direction, speed))
                 # maybe convert to radian with from -pi/4 to pi/4
                 # and add correction required
+                # old format:
+                # center_2023_03_14_14_56_39_822.jpg
                 # 1. filename must be in format xxx_<ANGLE_DAT>_**.jpg
-                normalize = (float(info[1]) - self._angle_min) / (self._angle_max - self._angle_min)
+
                 measurement = 2 * normalize - 1
                 image = cv2.imread(f)
                 image = cv2.GaussianBlur(image, (5, 5), cv2.BORDER_DEFAULT)
@@ -170,5 +186,7 @@ if __name__ == "__main__":
         d.fetch()
         d.print_info()
         d.train()
+        print("")
+        print("Time complete elapsed: {}".format(t_diff(tStart)))
     except Exception as e:
         print(e)
