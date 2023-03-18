@@ -41,3 +41,28 @@ jobs:
         run: |
           source venv/bin/activate
           python3 ./playground/speedTest.py
+
+      - name: Prepare changes
+        run: |
+          git commit --dry-run && echo "Things to commit" || echo "Clean repo, nothing to archive"
+          if git commit --dry-run; then
+            mkdir ./modified-files
+            git ls-files -o --exclude-standard | while read filename
+            do
+                echo "Printing: $filename"
+                cp "$filename" ./modified-files
+            done
+            git ls-files --modified | while read filename
+            do
+                echo "Printing: $filename"
+                cp "$filename" ./modified-files
+            done
+          else
+            echo "Clean repo"
+          fi
+      - name: Archive changes
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: changed
+          path: ./modified-files
