@@ -1,3 +1,3 @@
-[submodule "carData"]
-	path = carData
-	url = git@github.com:RaspberryCar/carData.git
+[submodule "dataPiCar"]
+	path = dataPiCar
+	url = git@github.com:RaspberryCar/dataPiCar.git
