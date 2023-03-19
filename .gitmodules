@@ -1,3 +1,0 @@
-[submodule "carData"]
-	path = carData
-	url = git@github.com:RaspberryCar/carData.git
