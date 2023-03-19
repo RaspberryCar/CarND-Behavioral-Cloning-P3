@@ -29,7 +29,7 @@ class TData:
         parser.read(config_filepath)
         self._csv_path = parser.get('general', 'csv_path')
         self._img_path = parser.get('general', 'img_path')
-        self._model_name = parser.get('general', 'model_name')
+        self._model_name = parser.get('general', 'model_name') + datetime.datetime.now().strftime("%Y-%m-%d_%H%M")
         self._image_width = int(parser.get('general', 'image_width'))
         self._image_height = int(parser.get('general', 'image_heigth'))
         self._random_count = int(parser.get('general', 'random_count'))
