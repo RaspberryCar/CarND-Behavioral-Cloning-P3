@@ -11,7 +11,7 @@ t_stamp = lambda t=None: str(t) if t else str(t_set())
 lines = []
 tStart = t_set()
 
-with open('./data/driving_log.csv') as csvfile:
+with open('dataUDACity/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
@@ -107,16 +107,19 @@ print("")
 model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4)
 
 print("")
-modelName = 'model.tflite'
+modelName = 'model/UDACity{}.tflite'.format(datetime.datetime.now().strftime("%Y-%m-%d_%H%M"))
 
 # Convert the model
+print("Convert model ...")
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
 
 # Save the TF Lite model
+print("Save model ...")
 with tf.io.gfile.GFile(modelName, 'wb') as f:
     f.write(tflite_model)
 
 print("")
+print("TFFile               : {}".format(modelName))
 print("Time ML       elapsed: {}".format(t_diff(t)))
 print("Time complete elapsed: {}".format(t_diff(tStart)))
