@@ -19,6 +19,7 @@ t_stamp = lambda t=None: str(t) if t else str(t_set())
 
 tStart = t_set()
 
+
 class TData:
     def __init__(self, config_filepath):
         self._init()
@@ -70,7 +71,7 @@ class TData:
                 # PREFIX-timestamp_<STEERING>_<DIRECTION>_<SPEED>.jpp
                 steering = line_token_list[1]
                 direction = line_token_list[2]
-                speed = line_token_list[3].split(".")[0] # without <.jpg>
+                speed = line_token_list[3].split(".")[0]  # without <.jpg>
                 normalize = (float(steering) - self._angle_min) / (self._angle_max - self._angle_min)
                 print("files={} steering={}/{} direction={} speed={}".format(f, steering, normalize, direction, speed))
                 # maybe convert to radian with from -pi/4 to pi/4
