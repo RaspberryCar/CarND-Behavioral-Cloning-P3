@@ -6,6 +6,15 @@
 
 Tensorflow only supports Python 3.5 to 3.8
 
+#### A: ZSH alias
+Either on zsh add to `~/.zshrc` this alias
+
+`alias python3='python3.8'`
+
+#### B: brew install
+
+or use the older way by installing right version
+
 ```
 brew unlink python
 brew link --force python@3.8
