@@ -44,11 +44,11 @@ jobs:
       - name: Train car data
         run: |
           source venv/bin/activate
-          python3 ./dataRaspiCar.py
+          python3 ./trainRaspiCar.py
 #      - name: Train UDACity data
 #        run: |
 #          source venv/bin/activate
-#          python3 ./dataUDACity.py
+#          python3 ./trainUDACity.py
 
       - name: Prepare changes
         run: |
