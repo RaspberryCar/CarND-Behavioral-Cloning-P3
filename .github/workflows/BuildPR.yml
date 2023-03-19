@@ -41,10 +41,14 @@ jobs:
         run: |
           source venv/bin/activate
           python3 ./playground/speedTest.py
-      - name: Train data
+      - name: Train car data
         run: |
           source venv/bin/activate
           python3 ./dataRaspiCar.py
+#      - name: Train UDACity data
+#        run: |
+#          source venv/bin/activate
+#          python3 ./dataUDACity.py
 
       - name: Prepare changes
         run: |

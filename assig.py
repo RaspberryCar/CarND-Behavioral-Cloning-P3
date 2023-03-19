@@ -5,7 +5,7 @@ import numpy as np
 
 lines = []
 
-with open('./data/driving_log.csv') as csvfile:
+with open('dataUDACity/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
@@ -13,13 +13,13 @@ with open('./data/driving_log.csv') as csvfile:
 images = []
 measurements = []
 
-print("Getting data....")
+print("Getting dataUDACity....")
 correction = 0.5
 for line in lines:
     for i in range(3):
         source_path = line[i]
         #filename = source_path.split('/')[-1]
-        # current_path = './data/IMG/' + filename
+        # current_path = './dataUDACity/' + filename
         filename = source_path #.split('/')[-1]
         current_path = filename.strip()
 
