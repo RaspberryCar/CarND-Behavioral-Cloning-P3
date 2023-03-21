@@ -18,8 +18,8 @@ print("Keras      version: {}".format(tf.keras.__version__))
 print("Eager execution: {}".format(tf.executing_eagerly()))
 # print("Cuda version: {}".format(tf_build_info.cuda_version_number))
 # print("Cudnn version: {}".format(tf_build_info.cudnn_version_number))
-print("Num Physical GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
-print("Num Logical  GPUs Available: ", len(tf.config.experimental.list_logical_devices('GPU')))
+print("Num Physical GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+print("Num Logical  GPUs Available: ", len(tf.config.list_logical_devices('GPU')))
 
 mnist = tf.keras.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
