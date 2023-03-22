@@ -120,6 +120,7 @@ class TData:
             self._augmentated_measurements.append(measurement * -1)
 
     def train(self):
+        batch_size = 32
         X_train = np.array(self._augmentated_images)
         y_train = np.array(self._augmentated_measurements)
         model = Sequential()
@@ -144,7 +145,7 @@ class TData:
         model.add(Dense(10))
         model.add(Dense(1))
         model.compile(loss='mse', optimizer='adam')
-        model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4)
+        model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=4, batch_size=batch_size)
         model.save(self._model_name + ".h5")
         self._generate_tflite()
         results = model.evaluate(X_train, y_train, verbose=0)
