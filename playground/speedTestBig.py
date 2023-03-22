@@ -38,7 +38,8 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # train ML model
-model.fit(train_images, train_labels, epochs=10)
+batch_size=32
+model.fit(train_images, train_labels, epochs=10, batch_size=batch_size)
 
 # evaluate ML model on test set
 test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)
@@ -52,4 +53,4 @@ print('\n')
 print(f'Training set contained {train_set_count} images')
 print(f'Testing set contained {test_set_count} images')
 print(f'Model achieved {test_acc:.2f} testing accuracy')
-print(f'Training and testing took {total_time:.2f} seconds')
+print(f'Training and testing took {total_time:.2f} seconds for batch_size={batch_size}')
