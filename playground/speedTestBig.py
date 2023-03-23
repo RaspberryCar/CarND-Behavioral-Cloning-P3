@@ -38,7 +38,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # train ML model
-batch_size=512
+batch_size=1024
 model.fit(train_images, train_labels, epochs=10, batch_size=batch_size)
 
 # evaluate ML model on test set
