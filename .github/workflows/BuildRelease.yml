@@ -1,0 +1,84 @@
+name: build
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-gitx:
+    name: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ M1 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          submodules: recursive
+      - name: Find Tag
+        id: tagger
+        uses: jimschubert/query-tag-action@v2
+        with:
+          skip-unshallow: 'true'
+          abbrev: false
+          commit-ish: HEAD
+      - name: Python install
+        run: brew install python@3.8
+      - name: Python3 version
+        run: python3 --version
+      - name: Install requirements
+        run: |
+          rm -rf venv/
+          python3 -m venv venv
+          source venv/bin/activate
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements.txt
+      - name: Check tensorflow
+        run: |
+          source venv/bin/activate
+          python3 -c 'import tensorflow as tf; print("tensorflow=", tf.__version__)'
+          python3 ./playground/numpyTest.py
+          python3 ./playground/testInstallation.py
+      - name: Train car data
+        run: |
+          source venv/bin/activate
+          python3 ./trainRaspiCar.py
+
+      - name: Prepare changes
+        run: |
+          git add .
+          git commit --dry-run && echo "Things to commit" || echo "Clean repo, nothing to archive"
+          if git commit --dry-run; then
+            git reset .
+            mkdir ./modified-files
+            git ls-files -o --exclude-standard
+            echo "Changes detected new"
+            git ls-files -o --exclude-standard | while read filename
+            do
+                echo "Printing: $filename"
+                cp "$filename" ./modified-files
+            done
+            git ls-files --modified
+            echo "Changes detected changed"
+            git ls-files --modified | while read filename
+            do
+                echo "Printing: $filename"
+                cp "$filename" ./modified-files
+            done
+          else
+            echo "Clean repo"
+          fi
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{steps.tagger.outputs.tag}}
+          generate_release_notes: true
+          name: ${{steps.tagger.outputs.tag}}
+          files: |
+            ./modified-files/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
