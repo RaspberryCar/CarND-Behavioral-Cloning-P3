@@ -13,15 +13,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ M1, M1pro ]
+        os: [ Spock ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
           submodules: recursive
-      - name: Python install
-        run: brew install python@3.8
+#      - name: Python install
+#        run: sudo apt-get install python3.8 python3.8-dev python3.8-distutils python3.8-venv
       - name: Python3 version
         run: python3 --version
       - name: Install requirements
@@ -30,7 +30,9 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           python3 -m pip install --upgrade pip
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirementsUbuntu.txt
+      - name: Show graphic card
+        run: lspci | grep VGA
       - name: Check tensorflow
         run: |
           source venv/bin/activate
