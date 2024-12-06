@@ -28,6 +28,7 @@ jobs:
           python3 --version
       - name: Install requirements
         run: |
+          deactivate || echo "Ignore result"
           rm -rf venv/
           python3 -m venv venv
           source venv/bin/activate
