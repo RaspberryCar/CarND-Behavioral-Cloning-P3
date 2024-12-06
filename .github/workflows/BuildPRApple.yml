@@ -7,8 +7,8 @@ on:
   pull_request:
 
 jobs:
-  build-gitx:
-    name: build
+  build:
+    name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
