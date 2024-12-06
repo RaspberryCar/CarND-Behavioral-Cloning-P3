@@ -42,7 +42,7 @@ scipy
 six==1.15.0
 tensorboard-plugin-wit==1.8.1
 tensorboard==2.17.0
-tensorflow-estimator==2.16.0
+tensorflow-estimator==2.15.0
 tensorflow-macos==2.16
 tensorflow-metal==1.1.0
 termcolor==1.1.0
