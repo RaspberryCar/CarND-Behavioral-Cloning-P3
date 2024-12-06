@@ -8,7 +8,7 @@ import tensorflow as tf
 import cv2
 from keras.layers import Conv2D
 from keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
-from keras.layers.pooling import MaxPooling2D
+from keras.src.legacy_tf_layers.pooling import MaxPooling2D
 from keras.models import Sequential
 
 import datetime
