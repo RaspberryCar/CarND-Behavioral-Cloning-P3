@@ -17,10 +17,10 @@ or use the older way by installing right version
 
 ```
 brew unlink python
-brew link --force python@3.9
-brew link --force --overwrite python@3.9
+brew link --force python@3.10
+brew link --force --overwrite python@3.10
 python3 --version
-echo 'export PATH="/usr/local/opt/python@3.9/bin:$PATH"' >> /Users/hannes/.bash_profile
+echo 'export PATH="/usr/local/opt/python@3.10/bin:$PATH"' >> /Users/hannes/.bash_profile
 source /Users/hannes/.bash_profile
 python3 --version
 ```
