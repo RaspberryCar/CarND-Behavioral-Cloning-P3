@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 1
           submodules: recursive
       - name: Python install
-        run: brew install python@3.8
+        run: brew install python@3.9
       - name: Python3 version
         run: python3 --version
       - name: Install requirements
