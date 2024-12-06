@@ -14,7 +14,7 @@ disable_eager_execution()
 tf.config.run_functions_eagerly(False)
 
 print("TensorFlow version: {}".format(tf.__version__))
-print("Keras      version: {}".format(tf.keras.__version__))
+# print("Keras      version: {}".format(tf.keras.__version__))
 print("Eager execution: {}".format(tf.executing_eagerly()))
 # print("Cuda version: {}".format(tf_build_info.cuda_version_number))
 # print("Cudnn version: {}".format(tf_build_info.cudnn_version_number))
