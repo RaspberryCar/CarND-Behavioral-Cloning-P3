@@ -1,7 +1,10 @@
+import platform
+
 import tensorflow as tf
 import cv2
 
 print("")
+print("Python     version: {}".format(platform.python_version()))
 print("OpenCV     version: {}".format(cv2.__version__))
 # print("Keras      version: {}".format(tf.keras.__version__))
 print("Tensorflow version: {}".format(tf.__version__))
