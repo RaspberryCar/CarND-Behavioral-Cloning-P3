@@ -1,3 +1,5 @@
+import platform
+
 import tensorflow as tf
 # from tensorflow.python.compiler.mlcompute import mlcompute
 from tensorflow.python.framework.ops import disable_eager_execution
@@ -13,6 +15,7 @@ disable_eager_execution()
 # mlcompute.set_mlc_device(device_name='gpu')  # Available options are 'cpu', 'gpu', and 'any'.
 tf.config.run_functions_eagerly(False)
 
+print("Python     version: {}".format(platform.python_version()))
 print("TensorFlow version: {}".format(tf.__version__))
 # print("Keras      version: {}".format(tf.keras.__version__))
 print("Eager execution: {}".format(tf.executing_eagerly()))
