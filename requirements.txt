@@ -17,7 +17,7 @@ importlib-metadata==1.7.0
 itsdangerous==1.1.0
 Jinja2==2.11.2
 Keras-Preprocessing==1.1.2
-Keras==2.15.0
+Keras==3.0.5
 Markdown==3.2.2
 MarkupSafe==1.1.1
 matplotlib
@@ -39,10 +39,10 @@ requests==2.32.0
 rsa==4.7
 scipy
 six==1.15.0
-tensorboard-plugin-wit==1.7.0
-tensorboard==2.15.0
+tensorboard-plugin-wit==1.8.1
+tensorboard==2.16.2
 tensorflow-estimator==2.15.0
-tensorflow-macos==2.15
+tensorflow-macos==2.16.2
 tensorflow-metal==1.1.0
 termcolor==1.1.0
 urllib3==2.2.3
