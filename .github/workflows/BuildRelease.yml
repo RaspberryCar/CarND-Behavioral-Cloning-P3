@@ -27,7 +27,7 @@ jobs:
           abbrev: false
           commit-ish: HEAD
       - name: Python install
-        run: brew install python@3.9
+        run: brew install python@3.10
       - name: Python3 version
         run: python3 --version
       - name: Install requirements

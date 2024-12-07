@@ -1,5 +1,6 @@
 import csv
 import glob
+import platform
 import random
 from configparser import ConfigParser
 
@@ -18,7 +19,7 @@ t_diff = lambda t: str(datetime.datetime.now().astimezone().replace(microsecond=
 t_stamp = lambda t=None: str(t) if t else str(t_set())
 
 tStart = t_set()
-
+print("Python     version: {}".format(platform.python_version()))
 
 class TData:
     def __init__(self, config_filepath):

@@ -14,13 +14,21 @@ jobs:
       fail-fast: false
       matrix:
         os: [ M1 ]
+        py: [ "3.10" ]
     steps:
       - name: Python install
-        run: brew install python@3.9
+        run: brew install python@${{ matrix.py }}
       - name: Python3 version
         run: |
           brew list | grep python
-          python3 --version
+          echo
+          python3 -V
+          echo python3=$(python3 -V)
+          shopt -s expand_aliases
+          alias python3='python${{ matrix.py }}'
+          echo "alias set"
+          echo python3=$(python3 -V)
+          python3 -V
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -30,28 +38,29 @@ jobs:
         run: |
           deactivate || echo "Ignore result"
           rm -rf venv/
-          python3 -m venv venv
+          python${{ matrix.py }} -m venv venv
           source venv/bin/activate
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r requirements.txt
+          python${{ matrix.py }} -m pip install --upgrade pip
+          python${{ matrix.py }} -m pip install -r requirements.txt
       - name: Check tensorflow
         run: |
           source venv/bin/activate
-          python3 -c 'import tensorflow as tf; print("tensorflow=", tf.__version__)'
-          python3 ./playground/numpyTest.py
-          python3 ./playground/testInstallation.py
+          python${{ matrix.py }} -c 'import tensorflow as tf; print("tensorflow=", tf.__version__)'
+          echo
+          python${{ matrix.py }} ./playground/numpyTest.py
+          python${{ matrix.py }} ./playground/testInstallation.py
       - name: Speed test
         run: |
           source venv/bin/activate
-          python3 ./playground/speedTest.py
+          python${{ matrix.py }} ./playground/speedTest.py
       - name: Train car data
         run: |
           source venv/bin/activate
-          python3 ./trainRaspiCar.py
+          python${{ matrix.py }} ./trainRaspiCar.py
 #      - name: Train UDACity data
 #        run: |
 #          source venv/bin/activate
-#          python3 ./trainUDACity.py
+#          python${{ matrix.py }} ./trainUDACity.py
 
       - name: Prepare changes
         run: |
