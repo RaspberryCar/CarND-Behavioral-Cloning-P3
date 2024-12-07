@@ -53,6 +53,11 @@ jobs:
         run: |
           source venv/bin/activate
           python${{ matrix.py }} ./playground/speedTest.py
+      - name: Speed measure
+        if: github.ref == 'refs/heads/measure' || startsWith(github.ref, 'refs/heads/measure')
+        run: |
+          source venv/bin/activate
+          python${{ matrix.py }} ./playground/speedMeasurement.py
       - name: Train car data
         run: |
           source venv/bin/activate
