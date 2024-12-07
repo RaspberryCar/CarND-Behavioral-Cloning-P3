@@ -2,7 +2,7 @@ import platform
 
 import tensorflow as tf
 # from tensorflow.python.compiler.mlcompute import mlcompute
-from tensorflow.python.framework.ops import disable_eager_execution
+# from tensorflow.python.framework.ops import disable_eager_execution
 import datetime
 
 t_set = lambda: datetime.datetime.now().astimezone().replace(microsecond=0)
@@ -11,7 +11,7 @@ t_stamp = lambda t=None: str(t) if t else str(t_set())
 
 tStart = t_set()
 
-disable_eager_execution()
+# disable_eager_execution()
 # mlcompute.set_mlc_device(device_name='gpu')  # Available options are 'cpu', 'gpu', and 'any'.
 tf.config.run_functions_eagerly(False)
 
