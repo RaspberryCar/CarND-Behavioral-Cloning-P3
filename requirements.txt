@@ -4,7 +4,7 @@ cachetools==4.1.1
 certifi==2024.7.4
 chardet==3.0.4
 click==7.1.2
-configparser
+configparser~=7.1.0
 dnspython==2.6.1
 eventlet==0.38.0
 Flask==1.1.2
@@ -20,13 +20,13 @@ Keras-Preprocessing==1.1.2
 Keras==3.0.5
 Markdown==3.2.2
 MarkupSafe==1.1.1
-matplotlib
+matplotlib~=3.9.3
 monotonic==1.5
-mpld3
+mpld3~=0.5.10
 oauthlib==3.1.0
-opencv-python
+opencv-python~=4.10.0.84
 opt-einsum==3.3.0
-pandas
+pandas~=2.2.3
 protobuf==3.20.3
 pyasn1-modules==0.2.8
 pyasn1==0.4.8
@@ -50,3 +50,6 @@ Werkzeug==1.0.1
 wrapt==1.12.1
 zipp==3.19.1
 numpy<2.0
+h5py~=3.12.1
+pillow~=11.0.0
+tensorflow~=2.16.2
