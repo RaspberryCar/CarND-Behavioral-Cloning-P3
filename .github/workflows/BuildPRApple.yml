@@ -16,6 +16,13 @@ jobs:
         os: [ M1 ]
         py: [ "3.10" ]
     steps:
+      - name: branch
+        run:
+          echo HEAD_REF=${{ github.HEAD_REF }}
+          echo REF=${{ github.REF }}
+          echo REF_NAME=${{ github.REF_NAME }}
+          echo github.ref=${{ github.ref }}
+          echo event_name=${{ github.event_name }}
       - name: Python install
         run: brew install python@${{ matrix.py }}
       - name: Python3 version
@@ -54,7 +61,7 @@ jobs:
           source venv/bin/activate
           python${{ matrix.py }} ./playground/speedTest.py
       - name: Speed measure
-        if: github.ref == 'refs/heads/measure' || startsWith(github.ref, 'refs/heads/measure')
+        if: github.HEAD_REF == 'refs/heads/measure' || startsWith(github.ref, 'refs/heads/measure')
         run: |
           source venv/bin/activate
           python${{ matrix.py }} ./playground/speedMeasurement.py
