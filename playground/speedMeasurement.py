@@ -44,8 +44,8 @@ class TestRun():  # leave this empty
 
 testArray = [
     # TestRun(32),
-    TestRun(64),
-    TestRun(128),
+    # TestRun(64),
+    # TestRun(128),
     TestRun(256),
     TestRun(512),
     TestRun(1024),
@@ -54,7 +54,7 @@ testArray = [
     TestRun(8192),
     TestRun(16384),
     TestRun(32768),
-    TestRun(65536),
+    # TestRun(65536),
 ]
 
 for batch_run in testArray:
