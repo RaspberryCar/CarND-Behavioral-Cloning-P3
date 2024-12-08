@@ -1,6 +1,6 @@
 import platform
 import plotext as plt
-
+import tensorflow as tf
 
 class TestRun():  # leave this empty
     def __init__(self, batch_size, time):
@@ -32,7 +32,8 @@ def batchList(val):
 def timeList(val):
     return val.time
 
-
+print("GPU device name:")
+print(tf.test.gpu_device_name())
 batch_list = list(map(batchList, testArray))
 time_list = list(map(timeList, testArray))
 
@@ -43,3 +44,6 @@ plt.title(platform.uname().node + " " + platform.uname().machine)
 plt.xlabel("batch size")
 plt.ylabel("Time")
 plt.show()
+
+for batch_run in testArray:
+    print("Time complete elapsed: {} for batchsize={}".format(batch_run.time, batch_run.batch_size))
