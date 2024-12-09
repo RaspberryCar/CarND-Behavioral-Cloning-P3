@@ -45,11 +45,11 @@ rsa==4.7
 scipy
 six==1.15.0
 tensorboard-plugin-wit==1.8.1
-tensorboard==2.16.2
+tensorboard==2.17.1
 tensorflow-estimator==2.15.0
 tensorflow-macos==2.16.2
 tensorflow-metal==1.1.0
-tensorflow~=2.16.2
+tensorflow==2.17.1
 termcolor==1.1.0
 urllib3==2.2.3
 wrapt==1.12.1
