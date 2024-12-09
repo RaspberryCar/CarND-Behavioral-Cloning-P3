@@ -2,6 +2,7 @@ import platform
 import plotext as plt
 import tensorflow as tf
 
+
 class TestRun():  # leave this empty
     def __init__(self, batch_size, time):
         self.batch_size = batch_size
@@ -32,6 +33,7 @@ def batchList(val):
 def timeList(val):
     return val.time
 
+
 print("GPU device name:")
 print(tf.test.gpu_device_name())
 batch_list = list(map(batchList, testArray))
@@ -40,7 +42,7 @@ time_list = list(map(timeList, testArray))
 # plt.hist(data1, 60, label = "mean 0")
 # plt.bar(batch_list, time_list)
 plt.plot(batch_list, time_list)
-plt.title(platform.uname().node + " " + platform.uname().machine)
+plt.title(__file__.rsplit("/", 1)[1].split('.')[0] + ".py " + platform.uname().node + " " + platform.uname().machine)
 plt.xlabel("batch size")
 plt.ylabel("Time")
 plt.show()
