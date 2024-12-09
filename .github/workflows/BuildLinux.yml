@@ -2,32 +2,26 @@ name: build
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - master
+  pull_request:
 
 jobs:
-  build-gitx:
+  build:
     name: build
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ M1 ]
+        os: [ data ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
           submodules: recursive
-      - name: Find Tag
-        id: tagger
-        uses: jimschubert/query-tag-action@v2
-        with:
-          skip-unshallow: 'true'
-          abbrev: false
-          commit-ish: HEAD
-      - name: Python install
-        run: brew install python@3.10
+#      - name: Python install
+#        run: sudo apt-get install python3.8 python3.8-dev python3.8-distutils python3.8-venv
       - name: Python3 version
         run: python3 --version
       - name: Install requirements
@@ -36,7 +30,9 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           python3 -m pip install --upgrade pip
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirementsUbuntu.txt
+      - name: Show graphic card
+        run: lspci | grep VGA
       - name: Check tensorflow
         run: |
           source venv/bin/activate
@@ -55,6 +51,10 @@ jobs:
         run: |
           source venv/bin/activate
           python3 ./trainRaspiCar.py
+#      - name: Train UDACity data
+#        run: |
+#          source venv/bin/activate
+#          python3 ./trainUDACity.py
 
       - name: Prepare changes
         run: |
@@ -80,13 +80,9 @@ jobs:
           else
             echo "Clean repo"
           fi
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - name: Archive changes
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
         with:
-          tag_name: ${{steps.tagger.outputs.tag}}
-          generate_release_notes: true
-          name: ${{steps.tagger.outputs.tag}}
-          files: |
-            ./modified-files/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: changed
+          path: ./modified-files
