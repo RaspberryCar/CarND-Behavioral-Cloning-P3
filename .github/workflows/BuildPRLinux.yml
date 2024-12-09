@@ -1,4 +1,4 @@
-name: Apple
+name: Linux
 
 on:
   push:
@@ -8,54 +8,47 @@ on:
 
 jobs:
   build:
-    name: build ${{ matrix.os }}
+    name: build
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ M1 ]
-        py: [ "3.10" ]
+        os: [ ubuntu-20.04 ]
+        py: [ "3.9" ]
+        include:
+          - os : ubuntu-22.04
+            py: "3.10"
+          - os: data
+            py: "3.10"
     steps:
-      - name: branch
-        run:
-          echo HEAD_REF=${{ github.HEAD_REF }}
-      - name: Python install
-        run: brew install python@${{ matrix.py }}
-      - name: Python3 version
-        run: |
-          brew list | grep python
-          echo
-          python3 -V
-          echo python3=$(python3 -V)
-          shopt -s expand_aliases
-          alias python3='python${{ matrix.py }}'
-          echo "alias set"
-          echo python3=$(python3 -V)
-          python3 -V
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
           submodules: recursive
+      - name: Python install
+        run: sudo apt-get install python${{ matrix.py }} python${{ matrix.py }}-dev python${{ matrix.py }}-distutils python${{ matrix.py }}-venv
+      - name: Python3 version
+        run: python3 --version
       - name: Install requirements
         run: |
-          deactivate || echo "Ignore result"
           rm -rf venv/
-          python${{ matrix.py }} -m venv venv
+          python3 -m venv venv
           source venv/bin/activate
-          python${{ matrix.py }} -m pip install --upgrade pip
-          python${{ matrix.py }} -m pip install -r requirements.txt
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements-${{ matrix.py }}.txt
+      - name: Show graphic card
+        run: lspci | grep VGA
       - name: Check tensorflow
         run: |
           source venv/bin/activate
-          python${{ matrix.py }} -c 'import tensorflow as tf; print("tensorflow=", tf.__version__)'
-          echo
-          python${{ matrix.py }} ./playground/numpyTest.py
-          python${{ matrix.py }} ./playground/testInstallation.py
+          python3 -c 'import tensorflow as tf; print("tensorflow=", tf.__version__)'
+          python3 ./playground/numpyTest.py
+          python3 ./playground/testInstallation.py
       - name: Speed test
         run: |
           source venv/bin/activate
-          python${{ matrix.py }} ./playground/speedTest.py
+          python3 ./playground/speedTest.py
       - name: Speed measure
         if: github.HEAD_REF == 'measure' || startsWith(github.HEAD_REF, 'measure')
         run: |
@@ -68,11 +61,11 @@ jobs:
       - name: Train car data
         run: |
           source venv/bin/activate
-          python${{ matrix.py }} ./trainRaspiCar.py
+          python3 ./trainRaspiCar.py
 #      - name: Train UDACity data
 #        run: |
 #          source venv/bin/activate
-#          python${{ matrix.py }} ./trainUDACity.py
+#          python3 ./trainUDACity.py
 
       - name: Prepare changes
         run: |
