@@ -82,7 +82,7 @@ def timeList(val):
 batch_list = list(map(batchList, testArray))
 time_list = list(map(timeList, testArray))
 
-plt.bar(batch_list, time_list)
+plt.plot(batch_list, time_list)
 plt.title(platform.uname().node + " " + platform.uname().machine)
 plt.xlabel("batch size")
 plt.ylabel("Time")
