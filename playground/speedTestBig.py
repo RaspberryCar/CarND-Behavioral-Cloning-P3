@@ -6,6 +6,7 @@ from time import sleep, perf_counter as pc
 import platform
 import tensorflow as tf
 import plotext as plt
+
 # download cifar10 dataset
 cifar10 = tf.keras.datasets.cifar10
 (train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
@@ -13,11 +14,13 @@ cifar10 = tf.keras.datasets.cifar10
 train_set_count = len(train_labels)
 test_set_count = len(test_labels)
 
+
 class TestRun():  # leave this empty
     def __init__(self, batch_size):
         self.batch_size = batch_size
         self.time_str = 0
         self.time = 0
+
 
 testArray = [
     # TestRun(32),
@@ -33,28 +36,29 @@ testArray = [
     # TestRun(32768),
     # TestRun(65536),
 ]
+
+# normalize images
+train_images = train_images / 255.0
+test_images = test_images / 255.0
+
+# create ML model using tensorflow provided ResNet50 model, note the [32, 32, 3] shape because that's the shape of cifar
+model = tf.keras.applications.ResNet50(
+    include_top=True, weights=None, input_tensor=None,
+    input_shape=(32, 32, 3), pooling=None, classes=10
+)
+
+# CIFAR 10 labels have one integer for each image (between 0 and 10)
+# We want to perform a cross entropy which requires a one hot encoded version e.g: [0.0, 0.0, 1.0, 0.0, 0.0...]
+train_labels = tf.one_hot(train_labels.reshape(-1), depth=10, axis=-1)
+
+# Do the same thing for the test labels
+test_labels = tf.one_hot(test_labels.reshape(-1), depth=10, axis=-1)
+
 for batch_run in testArray:
     print("batchSize=" + str(batch_run.batch_size))
     # setup start time
     t1_start = perf_counter()
     t0 = pc()
-
-    # normalize images
-    train_images = train_images / 255.0
-    test_images = test_images / 255.0
-
-    # create ML model using tensorflow provided ResNet50 model, note the [32, 32, 3] shape because that's the shape of cifar
-    model = tf.keras.applications.ResNet50(
-        include_top=True, weights=None, input_tensor=None,
-        input_shape=(32, 32, 3), pooling=None, classes=10
-    )
-
-    # CIFAR 10 labels have one integer for each image (between 0 and 10)
-    # We want to perform a cross entropy which requires a one hot encoded version e.g: [0.0, 0.0, 1.0, 0.0, 0.0...]
-    train_labels = tf.one_hot(train_labels.reshape(-1), depth=10, axis=-1)
-
-    # Do the same thing for the test labels
-    test_labels = tf.one_hot(test_labels.reshape(-1), depth=10, axis=-1)
 
     # compile ML model, use non sparse version here because there is no sparse data.
     model.compile(optimizer='adam',
@@ -77,12 +81,17 @@ for batch_run in testArray:
     print(f'Model achieved {test_acc:.2f} testing accuracy')
     print(f'Training and testing took {batch_run.time :.2f} seconds for batch_size={batch_run.batch_size}')
 
+for batch_run in testArray:
+    print("Time complete elapsed: {} {} for batchsize={}".format(batch_run.time_str, batch_run.time, batch_run.batch_size))
+
+
 def batchList(val):
     return val.batch_size
 
 
 def timeList(val):
     return val.time
+
 
 batch_list = list(map(batchList, testArray))
 time_list = list(map(timeList, testArray))
