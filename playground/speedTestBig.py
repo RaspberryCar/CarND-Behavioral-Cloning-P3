@@ -73,7 +73,7 @@ for batch_run in testArray:
 
     # setup stop time
     t1_stop = perf_counter()
-    batch_run.time = t1_stop - t1_start
+    batch_run.time = int(t1_stop - t1_start)
     # print results
     print('\n')
     print(f'Training set contained {train_set_count} images')
