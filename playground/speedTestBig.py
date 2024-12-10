@@ -81,9 +81,6 @@ for batch_run in testArray:
     print(f'Model achieved {test_acc:.2f} testing accuracy')
     print(f'Training and testing took {batch_run.time :.2f} seconds for batch_size={batch_run.batch_size}')
 
-for batch_run in testArray:
-    print("Time complete elapsed: {} {} for batchsize={}".format(batch_run.time_str, batch_run.time, batch_run.batch_size))
-
 
 def batchList(val):
     return val.batch_size
@@ -93,6 +90,8 @@ def timeList(val):
     return val.time
 
 
+print("GPU device name:")
+print(tf.test.gpu_device_name())
 batch_list = list(map(batchList, testArray))
 time_list = list(map(timeList, testArray))
 
@@ -101,3 +100,6 @@ plt.title(__file__.rsplit("/", 1)[1].split('.')[0] + ".py " + platform.uname().n
 plt.xlabel("batch size")
 plt.ylabel("Time")
 plt.show()
+
+for batch_run in testArray:
+    print("Time complete elapsed: {} {} for batchsize={}".format(batch_run.time_str, batch_run.time, batch_run.batch_size))
